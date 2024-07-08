@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dinamik Cədvəl</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 3px solid black;
+
+      }
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: center;
+        
+      }
+      th.vertical-text {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+      }
+      
+    </style>
+  </head>
+  <body>
+    <table id="dynamic-table"></table>
+    <script>
+      const data = {
+        columns: [
+          {
+            name: "column 1",
+            children: [
+              {
+                name: "column 1-1",
+                children: [
+                  {
+                    name: "column 1-1-1",
+                    children: [{ name: "column 1-1-1-1", children: [] }],
+                  },
+                  { name: "column 1-1-2", children: [] },
+                ],
+              },
+              {
+                name: "column 1-2",
+                children: [
+                  { name: "column 1-2-1", children: [] },
+                  { name: "column 1-2-2", children: [] },
+                ],
+              },
+            ],
+          },
+          { name: "column 2", children: [] },
+          {
+            name: "column 3",
+            children: [
+              { name: "column 3-1", children: [] },
+              { name: "column 3-2", children: [] },
+              { name: "column 3-3", children: [] },
+            ],
+          },
+          {
+            name: "column 4",
+            children: [{ name: "column 4-1", children: [] }],
+          },
+          {
+            name: "row 1",
+            children: [
+              { name: "row 1-1", children: [] },
+              { name: "row 1-2", children: [] },
+            ],
+          },
+          { name: "row 2", children: [] },
+          {
+            name: "row 3",
+            children: [
+              {
+                name: "row 3-1",
+                children: [{ name: "row 3-1-1", children: [] }],
+              },
+              { name: "row 3-2", children: [{ name: "4", children: [] }] },
+              { name: "row 3-3", children: [{ name: "5", children: [] }] },
+            ],
+          },
+          {
+            name: "row 4",
+            children: [
+              { name: "row 4-1", children: [{ name: "6", children: [] }] },
+            ],
+          },
+        ],
+      };
+
+      function createTable(data) {
+        const table = document.getElementById("dynamic-table");
+
+        const firstRow = table.insertRow();
+        const firstCell = document.createElement("th");
+        firstCell.rowSpan = 4;
+        firstCell.colSpan = 5;
+        firstRow.appendChild(firstCell);
+
+        const secondCell = document.createElement("th");
+        secondCell.rowSpan = 4;
+        secondCell.colSpan = 1;
+        secondCell.classList.add("vertical-text");
+        secondCell.textContent = "Sətrin №-si";
+        firstRow.appendChild(secondCell);
+
+        const column1Cell = document.createElement("th");
+        column1Cell.colSpan = 4;
+        column1Cell.textContent = "column 1";
+        firstRow.appendChild(column1Cell);
+
+        const column2Cell = document.createElement("th");
+        column2Cell.rowSpan = 4;
+        column2Cell.textContent = "column 2";
+        firstRow.appendChild(column2Cell);
+
+        const column3Cell = document.createElement("th");
+        column3Cell.colSpan = 3;
+        column3Cell.classList.add("vertical-text");
+        column3Cell.textContent = "column 3";
+        firstRow.appendChild(column3Cell);
+
+        const column4Cell = document.createElement("th");
+        column4Cell.colSpan = 2;
+        column4Cell.textContent = "column 4";
+        firstRow.appendChild(column4Cell);
+
+        const secondRow = table.insertRow();
+        const col1_1Cell = document.createElement("th");
+        col1_1Cell.colSpan = 2;
+        col1_1Cell.textContent = "column 1-1";
+        secondRow.appendChild(col1_1Cell);
+
+        const col1_2Cell = document.createElement("th");
+        col1_2Cell.colSpan = 2;
+        col1_2Cell.textContent = "column 1-2";
+        secondRow.appendChild(col1_2Cell);
+
+        const col3_1Cell = document.createElement("th");
+        col3_1Cell.rowSpan = 3;
+        col3_1Cell.colSpan = 1;
+        col3_1Cell.classList.add("vertical-text");
+        col3_1Cell.textContent = "column 3-1";
+        secondRow.appendChild(col3_1Cell);
+
+        const col3_2Cell = document.createElement("th");
+        col3_2Cell.rowSpan = 3;
+        col3_2Cell.classList.add("vertical-text");
+        col3_2Cell.textContent = "column 3-2";
+        secondRow.appendChild(col3_2Cell);
+
+        const col3_3Cell = document.createElement("th");
+        col3_3Cell.rowSpan = 3;
+        col3_3Cell.colSpan = 1;
+        col3_3Cell.classList.add("vertical-text");
+        col3_3Cell.textContent = "column 3-3";
+        secondRow.appendChild(col3_3Cell);
+
+        const col4_1Cell = document.createElement("th");
+        col4_1Cell.rowSpan = 3;
+        col4_1Cell.colSpan = 2;
+        col4_1Cell.textContent = "column 4-1";
+        secondRow.appendChild(col4_1Cell);
+
+        const thirdRow = table.insertRow();
+        const col1_1_1Cell = document.createElement("th");
+        col1_1_1Cell.rowSpan = 1;
+        col1_1_1Cell.colSpan = 1;
+        col1_1_1Cell.textContent = "column 1-1-1";
+        thirdRow.appendChild(col1_1_1Cell);
+
+        const col1_1_2Cell = document.createElement("th");
+        col1_1_2Cell.rowSpan = 2;
+        col1_1_2Cell.colSpan = 1;
+        col1_1_2Cell.textContent = "column 1-1-2";
+        thirdRow.appendChild(col1_1_2Cell);
+
+        const col1_2_1Cell = document.createElement("th");
+        col1_2_1Cell.rowSpan = 2;
+        col1_2_1Cell.colSpan = 1;
+        col1_2_1Cell.textContent = "column 1-2-1";
+        thirdRow.appendChild(col1_2_1Cell);
+
+        const col1_2_2Cell = document.createElement("th");
+        col1_2_2Cell.rowSpan = 2;
+        col1_2_2Cell.colSpan = 1;
+        col1_2_2Cell.textContent = "column 1-2-2";
+        thirdRow.appendChild(col1_2_2Cell);
+
+        const fourthRow = table.insertRow();
+        const col1_1_1_1Cell = document.createElement("th");
+        col1_1_1_1Cell.rowSpan = 1;
+        col1_1_1_1Cell.colSpan = 1;
+        col1_1_1_1Cell.textContent = "column 1-1-1-1";
+        fourthRow.appendChild(col1_1_1_1Cell);
+
+        const fifthRow = table.insertRow();
+        const fifthRowCol1 = fifthRow.insertCell();
+        fifthRowCol1.colSpan = 5;
+        fifthRowCol1.rowSpan = 1;
+        fifthRowCol1.textContent = "A";
+
+        const fifthRowCol2 = fifthRow.insertCell();
+        fifthRowCol2.rowSpan = 1;
+        fifthRowCol2.textContent = "B";
+
+        for (let i = 1; i <= 5; i++) {
+          const cell = fifthRow.insertCell();
+          cell.colSpan = 1;
+          cell.rowSpan = 1;
+          cell.textContent = i;
+        }
+
+        const cell5_1 = fifthRow.insertCell();
+        cell5_1.colSpan = 1;
+        cell5_1.rowSpan = 1;
+        cell5_1.textContent = "5-1";
+
+        const cell5_2 = fifthRow.insertCell();
+        cell5_2.rowSpan = 1;
+        cell5_2.textContent = "5-2";
+
+        const cell6 = fifthRow.insertCell();
+        cell6.rowSpan = 1;
+        cell6.textContent = "6";
+
+        const cell7 = fifthRow.insertCell();
+        cell7.colSpan = 2;
+        cell7.rowSpan = 1;
+        cell7.textContent = "7";
+
+        const row1 = table.insertRow();
+        const row1Cell1 = row1.insertCell();
+        row1Cell1.rowSpan = 2;
+        row1Cell1.textContent = "row 1";
+
+        const row1Cell2 = row1.insertCell();
+        row1Cell2.colSpan = 4;
+        row1Cell2.textContent = "row 1-1";
+
+        const row1Cell3 = row1.insertCell();
+        row1Cell3.colSpan = 1;
+        row1Cell3.textContent = "1";
+
+        for (let i = 0; i < 9; i++) {
+          const cell = row1.insertCell();
+          cell.colSpan = 1;
+          cell.rowSpan = 1;
+          cell.textContent = "";
+        }
+
+        const row2 = table.insertRow();
+        const row2Cell1 = row2.insertCell();
+        row2Cell1.colSpan = 4;
+        row2Cell1.textContent = "row 1-2";
+
+        const row2Cell2 = row2.insertCell();
+        row2Cell2.rowSpan = 1;
+        row2Cell2.textContent = "2";
+
+        for (let i = 0; i < 9; i++) {
+          const cell = row2.insertCell();
+          cell.colSpan = 1;
+          cell.rowSpan = 1;
+          cell.textContent = "";
+        }
+
+        const row3 = table.insertRow();
+        const row3Cell1 = row3.insertCell();
+        row3Cell1.rowSpan = 3;
+        row3Cell1.textContent = "row 3";
+        row3Cell1.style.writingMode = "vertical-rl";
+        row3Cell1.style.transform = "rotate(180deg)";
+
+        const row3Cell2 = row3.insertCell();
+        row3Cell2.rowSpan = 4;
+        row3Cell2.colSpan = 2;
+        row3Cell2.textContent = "row 3-1";
+
+        const row3Cell3 = row3.insertCell();
+        row3Cell3.colSpan = 2;
+        row3Cell3.textContent = "row 3-1-1";
+
+        const row3Cell4 = row3.insertCell();
+        row3Cell4.rowSpan = 1;
+        row3Cell4.textContent = "3-1";
+
+        for (let i = 0; i < 9; i++) {
+          const cell = row3.insertCell();
+          cell.colSpan = 1;
+          cell.rowSpan = 1;
+          cell.textContent = "";
+        }
+
+        const row4 = table.insertRow();
+        const row4Cell1 = row4.insertCell();
+        row4Cell1.colSpan = 2;
+        row4Cell1.textContent = "row 3-1-2";
+
+        const row4Cell2 = row4.insertCell();
+        row4Cell2.rowSpan = 1;
+        row4Cell2.textContent = "3-2";
+
+        for (let i = 0; i < 9; i++) {
+          const cell = row4.insertCell();
+          cell.colSpan = 1;
+          cell.rowSpan = 1;
+          cell.textContent = "";
+        }
+
+        const row5 = table.insertRow();
+        const row5Cell1 = row5.insertCell();
+        row5Cell1.colSpan = 2;
+        row5Cell1.rowSpan = 2;
+      
+        row5Cell1.textContent = "row 3-1-3";
+
+        const row5Cell2 = row5.insertCell();
+        row5Cell2.rowSpan = 2;
+        row5Cell2.textContent = "3-3";
+
+        const row6 = table.insertRow();
+        const row6Cell1 = row6.insertCell();
+        row6Cell1.textContent = "row 4";
+        row6Cell1.rowSpan = 4;
+
+        // Row 3-2
+        const row3_2 = table.insertRow();
+        const row3_2_Cell1 = row3_2.insertCell();
+        row3_2_Cell1.textContent = "row 3-2";
+        row3_2_Cell1.colSpan = 4;
+        row3_2_Cell1.rowSpan = 1;
+
+        const row3_2_3 = row3_2.insertCell();
+        row3_2_3.rowSpan = 1;
+        row3_2_3.textContent = "4";
+
+        // Row 3-3
+        const row3_3 = table.insertRow();
+        const row3_3_Cell1 = row3_3.insertCell();
+        row3_3_Cell1.textContent = "row 3-3";
+        row3_3_Cell1.colSpan = 4;
+
+        const row3_3_3 = row3_3.insertCell();
+        row3_3_3.rowSpan = 1;
+        row3_3_3.rowSpan = 1;
+
+        row3_3_3.textContent = "5";
+
+        // Row 4-1
+        const row4_1 = table.insertRow();
+        const row4_1_Cell1 = row4_1.insertCell();
+        row4_1_Cell1.textContent = "row 4-1";
+        row4_1_Cell1.colSpan = 4;
+
+        const row4_1_4 = row4_1.insertCell();
+        row4_1_4.rowSpan = 1;
+        row4_1_4.textContent = "6";
+
+        for (let i = 0; i < 9; i++) {
+          const cell = row6.insertCell();
+          cell.colSpan = 1;
+          cell.rowSpan = 1;
+          cell.textContent = "";
+        }
+
+        for (let i = 0; i < 9; i++) {
+          const cell = row4_1.insertCell() + row3_2.insertCell() + row3_3.insertCell();
+          cell.colSpan = 1;
+          cell.rowSpan = 1;
+          cell.textContent = "";
+        }
+      }
+
+      createTable(data);
+    </script>
+  </body>
+</html>
